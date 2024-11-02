@@ -14,4 +14,6 @@
             </div>
         </div>
     </div>
+
+    {{-- @extends(('resources/views/pico.blade.php') --}}
 </x-app-layout>
