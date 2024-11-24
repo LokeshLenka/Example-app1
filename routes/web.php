@@ -62,16 +62,16 @@ Route::get('/ip', function () {
 
 // Route::post('/publish', [PublishController::class, 'store'])->name('publish.store');
 
-Route::get('/tokencheck', [TokenIsValidController::class,'index'])->middleware('TokenIsValid');
+Route::get('/tokencheck', [TokenIsValidController::class, 'index'])->middleware('TokenIsValid');
 
 Route::post('/publishtoken', [TokenIsValidController::class, 'store'])->middleware(['auth'])->name('tokens.store');
 
 Route::get('/publishtoken', [TokenIsValidController::class, 'show'])->middleware('auth')->name('tokens.show');
 
 
-Route::get('/todo',[TodoController::class,'index'])->middleware(['auth'])->name('todo');
+Route::get('/todo', [TodoController::class, 'index'])->middleware(['auth'])->name('todo');
 
-Route::post('/todo',[TodoController::class,'store'])->middleware(['auth'])->name('todo.store');
+Route::post('/todo', [TodoController::class, 'store'])->middleware(['auth'])->name('todo.store');
 
 //
 
