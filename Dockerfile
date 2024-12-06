@@ -38,8 +38,10 @@ RUN a2enmod rewrite
 RUN sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf \
     && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
+ENV PORT=8000
+
 # Expose the port Render uses
-EXPOSE 8080
+EXPOSE 8000
 
 # Start Apache
 CMD ["apache2-foreground"]
