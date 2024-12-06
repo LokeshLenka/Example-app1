@@ -1,47 +1,36 @@
-FROM php:8.2-apache
+# Base image for PHP
+FROM php:8.2-fpm
 
-# Install system dependencies
-# Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl \
-    zip \
-    unzip \
-    git \
-    libonig-dev \
-    libxml2-dev \
+    nginx \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libzip-dev \
-    libpq-dev  # Add this line to install PostgreSQL development libraries \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_pgsql mbstring gd zip opcache
+    zip \
+    unzip \
+    curl \
+    && docker-php-ext-install pdo_mysql gd
 
 # Install Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy application code
-WORKDIR /var/www/html
+# Set working directory
+WORKDIR /var/www
+
+# Copy Laravel application files
 COPY . .
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Set permissions for storage and cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Install Laravel dependencies
-RUN composer install --optimize-autoloader --no-dev
+# Configure Nginx
+RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+COPY nginx.conf /etc/nginx/sites-available/default
+RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Expose port 8000 for Nginx
+EXPOSE 8000
 
-# Configure Apache to use the correct port and document root
-RUN sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-ENV PORT=8080
-
-# Expose the port Render uses
-EXPOSE 8080
-
-# Start ApacheCMD ["nginx", "-g", "daemon off;"]
-CMD ["nginx", "-g", "daemon off;"]
+# Start Nginx and PHP-FPM
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
