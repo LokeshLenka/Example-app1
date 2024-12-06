@@ -1,44 +1,43 @@
-# Base image for PHP
+# Use the official PHP image as the base image
 FROM php:8.2-fpm
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+# Set working directory
+WORKDIR /var/www/html
+
+# Install system dependencies and PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
     zip \
     unzip \
     curl \
-    && docker-php-ext-install pdo_pgsql
+    git \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_pgsql
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www
-
-# Copy application files
-# Copy Laravel application files
+# Copy the application code
 COPY . .
 
-# Install Composer dependencies
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Install dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
-# Set permissions
-# Set permissions for storage and cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Copy Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-# Create necessary directories and copy the Nginx configuration
-RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
-COPY nginx.conf /etc/nginx/sites-available/default
-# Ensure no duplicate symbolic links and create a new one
-RUN rm -f /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# Nginx setup
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Expose port
-# Expose port 8000 for Nginx
-EXPOSE 8000
+# Expose the application port
+ENV PORT=8000
+EXPOSE ${PORT}
+
 # Start Nginx and PHP-FPM
-CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+CMD service php8.2-fpm start && nginx -g "daemon off;"
