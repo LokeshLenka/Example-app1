@@ -23,6 +23,9 @@
     "directories": {
         "test": "tests"
     },
+    "require": {
+    "ext-pgsql": "*"
+},
     "dependencies": {
         "@picocss/pico": "^2.0.6",
         "ansi-regex": "^6.1.0",
