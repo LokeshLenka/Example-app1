@@ -4,14 +4,13 @@ FROM php:8.2-fpm
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     nginx \
-    libpq-dev \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     zip \
     unzip \
     curl \
-    && docker-php-ext-install pdo pdo_pgsql gd
+    && docker-php-ext-install pdo_mysql gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -29,8 +28,13 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Copy Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Configure Nginx
+RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+COPY nginx.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Expose port
+# Expose port 8000
 EXPOSE 8000
+
+# Start Nginx and PHP-FPM
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
