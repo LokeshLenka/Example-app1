@@ -43,5 +43,5 @@ ENV PORT=8080
 # Expose the port Render uses
 EXPOSE 8080
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start ApacheCMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
