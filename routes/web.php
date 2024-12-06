@@ -1,14 +1,18 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Profile_Controller;
 use App\Http\Controllers\PublishController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TokenIsValidController;
 use App\Http\Middleware\TokenIsValid;
+use App\Http\Controllers\UserController;
 // use Closure;
 
 Route::get('/', function () {
@@ -121,13 +125,41 @@ Route::prefix('testuser')->group(function () {
 
 
 // Route model binding
-Route::get('/posts/{post?}', [PostController::class, 'show'])->name('posts.show');
+// Route::get('/posts/{post?}', [PostController::class, 'show'])->name('posts.show');
 
 // Route fallback - if a request doesn't matches above routes,then this fallback is executed
 // and this should be the last route defined in web.php
 // Route::fallback(function(){
 //     return view('404');
 // });
+
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
+Route::resource('bloguser', BlogUserController::class);
+
+
+Route::resource('blog', BlogController::class)->middleware('auth');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 require __DIR__ . '/auth.php';

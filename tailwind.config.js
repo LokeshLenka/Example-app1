@@ -18,6 +18,7 @@ export default {
                     '2fr': 'minmax(0, 2fr)',
                 }
             },
+            
         },
     },
 

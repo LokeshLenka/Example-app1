@@ -7,7 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Profile_Controller;
 
+use function PHPUnit\Framework\countOf;
 
 class BlogController extends Controller
 {
@@ -48,6 +50,10 @@ class BlogController extends Controller
             'photo' => 'nullable',
         ]);
 
+        if (!$this->updateblogpostcount()) {
+            echo '<h1><center>Something Went Wrong</center></h1>';
+            return redirect('/');
+        }
         return redirect()->back()->with('publish', 'Published  ✅');
     }
 
@@ -57,7 +63,7 @@ class BlogController extends Controller
     public function show(string $id)
     {
         $blog = Blog::find($id);
-        return view('blog.showblog',compact('blog'));
+        return view('blog.showblog', compact('blog'));
     }
 
     /**
@@ -82,5 +88,11 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         //
+    }
+
+    private function updateblogpostcount(): bool
+    {
+        DB::table('blogusers')->where('user_id', Auth::id())->increment('blogpostcount');
+        return true;
     }
 }

@@ -14,13 +14,19 @@
     <link href="resources/css/bootstrap.css" rel="stylesheet" />
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.conditional.min.css"> --}}
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_vert" />
+
     <style>
         * {
-            font-size: 1em !important;
+            /* font-size: 1em !important; */
         }
 
         .dropdown {
@@ -35,13 +41,26 @@
             z-index: 1;
             /* z-index: 20; */
         }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 48
+        }
+
+        .large-icon {
+            font-size: 48px;
+            /* Increase or decrease as needed */
+        }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 {{-- @section('content') --}}
 
-<body class="font-sans antialiased bg-sky-50 dark:bg-gray-800">
-    <div class="">
+<body class="font-sans antialiased bg-blue-200 dark:bg-slate-950">
+    <div class="z-100 fixed w-full flex justify-center">
         @include('layouts.navigation')
     </div>
     <!-- Page Heading -->
@@ -62,6 +81,7 @@
     {{-- @endsection --}}
     <script>
         const toggleButton = document.getElementById('theme-toggle');
+        const toggleButton1 = document.getElementById('theme-toggle1');
         const htmlElement = document.documentElement;
 
         // Load the saved theme from localStorage or default to light
@@ -74,6 +94,10 @@
 
         // Toggle theme on button click
         toggleButton.addEventListener('click', () => {
+            const isDark = htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        toggleButton1.addEventListener('click', () => {
             const isDark = htmlElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
@@ -117,7 +141,12 @@
         }, 3000);
     </script>
 
-    <script></script>
+    <script>
+        var published = document.getElementById('published');
+        setTimeout(() => {
+            published.style.display = 'none';
+        }, 3000);
+    </script>
 </body>
 
 </html>
