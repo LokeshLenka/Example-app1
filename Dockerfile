@@ -32,11 +32,11 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install Laravel dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Expose port 8080 for Render
-EXPOSE 8080
-
-# Set environment variable for Render
+# Ensure Laravel uses the Render-assigned port
 ENV PORT=8080
 
+# Expose Render's port
+EXPOSE 8080
+
 # Start Laravel application using PHP's built-in server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT}"]
