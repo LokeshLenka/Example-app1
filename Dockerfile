@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     curl \
-    && docker-php-ext-install pdo_pgsql gd
+    && docker-php-ext-install pdo_mysql gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
