@@ -1,43 +1,44 @@
-# Use the official PHP image as the base image
 FROM php:8.2-fpm
 
-# Set working directory
-WORKDIR /var/www/html
-
-# Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
     nginx \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libpq-dev \
     zip \
     unzip \
     curl \
-    git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_pgsql
+    && docker-php-ext-install pdo_mysql gd
 
 # Install Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy the application code
+# Set working directory
+WORKDIR /var/www
+
+# Copy Laravel application files
+# Copy application files
 COPY . .
 
-# Set permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Install dependencies using Composer
+# Set permissions for storage and cache
+# Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
+# Set permissions
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Nginx setup
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# Create necessary directories and copy the Nginx configuration
+# Configure Nginx
+RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+COPY nginx.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Expose the application port
-ENV PORT=8000
-EXPOSE ${PORT}
+# Ensure no duplicate symbolic links and create a new one
+RUN rm -f /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# Expose port 8000 for Nginx
+# Expose port 8000
+EXPOSE 8000
 
 # Start Nginx and PHP-FPM
-CMD service php8.2-fpm start && nginx -g "daemon off;"
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
