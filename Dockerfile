@@ -24,10 +24,13 @@ COPY . .
 # Set permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Configure Nginx
+# Create necessary directories and copy the Nginx configuration
 RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
 COPY nginx.conf /etc/nginx/sites-available/default
-RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Ensure no duplicate symbolic links and create a new one
+RUN rm -f /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
 
 # Expose port 8000 for Nginx
 EXPOSE 8000
