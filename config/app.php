@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://example-app1-y7lb.onrender.com'),
 
     /*
     |--------------------------------------------------------------------------
