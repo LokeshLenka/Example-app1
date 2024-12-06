@@ -1,12 +1,4 @@
-# Use a multi-stage build
-FROM node:20 AS frontend-build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-FROM php:8.2-fpm
+FROM php:8.2-apache
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -14,7 +6,6 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
-    nginx \
     libonig-dev \
     libxml2-dev \
     libpng-dev \
@@ -31,29 +22,22 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-# Copy built frontend assets from previous stage
-COPY --from=frontend-build /app/public/build /var/www/html/public/build
-
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install PHP dependencies
+# Install Laravel dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Prepare Laravel application
-RUN php artisan config:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-# Add Nginx configuration
-COPY nginx.conf /etc/nginx/sites-available/default
+# Configure Apache to use the correct port and document root
+RUN sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Create nginx pid directory
-RUN mkdir -p /run/nginx
-
-# Expose port
+# Expose the port Render uses
 EXPOSE 8080
 
-# Start Nginx and PHP-FPM
-CMD service nginx start && php-fpm
+# Start Apache
+CMD ["apache2-foreground"]
