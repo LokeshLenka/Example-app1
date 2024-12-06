@@ -40,6 +40,8 @@ RUN rm -f /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/d
 # Expose port 8000 for Nginx
 # Expose port 8000
 EXPOSE 8000
+# Install PostgreSQL PHP extension
+RUN docker-php-ext-install pdo pdo_pgsql
 
 # Start Nginx and PHP-FPM
 CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
