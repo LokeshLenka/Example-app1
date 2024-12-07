@@ -49,4 +49,5 @@ RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 EXPOSE 8080
 
 # Start Nginx and PHP-FPM
-CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "php-fpm & npm run dev & nginx -g 'daemon off;'"]
+
