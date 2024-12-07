@@ -25,19 +25,18 @@ WORKDIR /var/www
 # Copy application files
 COPY . .
 
-# Install Node.js dependencies
-RUN npm install
-RUN npm run build
-
-RUN php artisan optimize:clear
-
-RUN chown -R www-data:www-data /var/www/public/build
-
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Build assets
+RUN npm install
+RUN npm run build
+
+# Clear Laravel cache
+RUN php artisan optimize:clear
+
 # Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/build
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Configure Nginx
