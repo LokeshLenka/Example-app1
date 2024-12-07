@@ -15,17 +15,19 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Add these lines after Composer install
+# Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
-RUN npm install
-RUN npm run build
 
 # Set working directory
 WORKDIR /var/www
 
-# Copy Laravel application files
+# Copy application files
 COPY . .
+
+# Install Node.js dependencies
+RUN npm install
+RUN npm run build
 
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
