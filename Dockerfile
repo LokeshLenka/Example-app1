@@ -29,6 +29,10 @@ COPY . .
 RUN npm install
 RUN npm run build
 
+RUN php artisan optimize:clear
+
+RUN chown -R www-data:www-data /var/www/public/build
+
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
