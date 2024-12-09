@@ -26,6 +26,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
+    <script src ="{{ asset('js/app.ja') }}"></script>
+    
     <style>
         * {
             /* font-size: 1em !important; */
