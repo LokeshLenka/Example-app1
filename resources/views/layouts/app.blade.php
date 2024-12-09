@@ -28,7 +28,11 @@
 
     <script src ="{{ asset('js/app.ja') }}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+      <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable dark mode class strategy
+        }
+    </script>
     <style>
         * {
             /* font-size: 1em !important; */
