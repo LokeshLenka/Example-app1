@@ -32,6 +32,8 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
 
+RUN php artisan migrate --force
+
 # Clear Laravel cache
 # RUN php artisan optimize:clear
 
