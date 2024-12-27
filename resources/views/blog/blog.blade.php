@@ -32,7 +32,7 @@
 
                         <!-- Blog Content -->
                         <div class="-mt-16">
-                            <p class="text-gray-700 dark:text-slate-300 text-sm truncate">
+                            <p class="text-gray-700 dark:text-slate-300 text-sm truncate text-wrap">
                                 {{ Str::limit($blog->blogcontent, 150) }}
                             </p>
                         </div>
