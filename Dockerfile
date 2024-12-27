@@ -47,6 +47,10 @@ RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
 COPY nginx.conf /etc/nginx/sites-available/default
 RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
 # Expose port 8080 (required by Nginx and Docker Compose)
 EXPOSE 8080
 
