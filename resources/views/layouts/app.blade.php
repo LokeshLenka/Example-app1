@@ -158,7 +158,7 @@
         }, 3000);
     </script>
 
-    <!-- Add this before your @vite directive -->
+    <!-- Add this before your vite directive -->
 <script>
     console.log('Asset URL:', '{{ asset('') }}');
     console.log('App URL:', '{{ config('app.url') }}');
