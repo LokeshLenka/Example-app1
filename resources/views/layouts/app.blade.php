@@ -32,9 +32,11 @@
             darkMode: 'class', // Enable dark mode class strategy
         }
     </script> -->
-
+<!-- 
     <link href="{{ asset('resources/css/app.css') }}" rel= "stylesheet"/>
-    <script src ="{{ asset('resources/js/app.js') }}"></script>
+    <script src ="{{ asset('resources/js/app.js') }}"></script> -->
+
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <style>
         * {
             /* font-size: 1em !important; */
