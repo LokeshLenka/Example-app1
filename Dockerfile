@@ -30,6 +30,8 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan migrate --force
 
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/public/build
+
 # Build assets
 RUN npm install
 RUN npm run build
@@ -42,7 +44,6 @@ RUN php artisan optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/build
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 
 # Configure Nginx
