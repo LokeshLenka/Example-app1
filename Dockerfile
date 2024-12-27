@@ -30,8 +30,15 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan migrate --force
 
+# Build assets
+RUN npm install
+RUN npm run build
+
 # Clear Laravel cache
-# RUN php artisan optimize:clear
+RUN php artisan optimize:clear
+
+#Build cache
+RUN php artisan optimize
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/build
@@ -43,9 +50,6 @@ RUN mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
 COPY nginx.conf /etc/nginx/sites-available/default
 RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Build assets
-RUN npm install
-RUN npm run build
 
 # Expose port 8080 (required by Nginx and Docker Compose)
 EXPOSE 8080
