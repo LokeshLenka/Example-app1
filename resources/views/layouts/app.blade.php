@@ -26,13 +26,15 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"/>
 
-    <script src ="{{ asset('js/app.js') }}"></script>
 <!--     <script src="https://cdn.tailwindcss.com"></script> -->
 <!--       <script>
         tailwind.config = {
             darkMode: 'class', // Enable dark mode class strategy
         }
     </script> -->
+
+    <link href="{{ asset('resources/css/app.css') }}" rel= "stylesheet"/>
+    <script src ="{{ asset('resources/js/app.js') }}"></script>
     <style>
         * {
             /* font-size: 1em !important; */
@@ -65,7 +67,7 @@
         }
     </style>
 <!-- @viteReactRefresh -->
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+<!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 </head>
 {{-- @section('content') --}}
 
