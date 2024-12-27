@@ -66,8 +66,6 @@
             /* Increase or decrease as needed */
         }
     </style>
-<!-- @viteReactRefresh -->
-<!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 </head>
 {{-- @section('content') --}}
 
