@@ -23,8 +23,8 @@
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_vert" />
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('resources/css/app.css') }}" rel="stylesheet"/>
+    <script src= "{{ asset('resources/js/app.js') }}"></script>
 
 <!--     <script src="https://cdn.tailwindcss.com"></script> -->
 <!--       <script>
@@ -33,7 +33,6 @@
         }
     </script> -->
 
-    @vite(['resources/css/app.css','resources/js/app.js'])
     <style>
         * {
             /* font-size: 1em !important; */
