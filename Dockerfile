@@ -30,6 +30,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Build assets
 RUN npm install
+RUN npm run build
 
 RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
     && mkdir -p /var/www/storage/logs \
@@ -39,7 +40,6 @@ RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
     && chmod -R 775 /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/public
     
-RUN npm run build
 
 # RUN php artisan migrate --force
 
