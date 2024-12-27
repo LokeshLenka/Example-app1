@@ -42,7 +42,7 @@ RUN npm install
 COPY . .
 
 # Generate application key if not exists
-RUN php artisan key:generate --force
+# RUN php artisan key:generate --force
 
 # Set directory permissions
 RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
