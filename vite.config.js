@@ -21,4 +21,10 @@ export default defineConfig({
     },
     // Add base URL configuration
     base: '/build/',
+
+       server: {
+        hmr: {
+            host: 'localhost'
+        }
+    }
 });
