@@ -30,6 +30,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Build assets
 RUN npm install
+RUN npm install --save-dev vite laravel-vite-plugin
 RUN npm run build
 
 RUN mkdir -p /var/www/storage/framework/{sessions,views,cache} \
