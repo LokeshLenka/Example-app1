@@ -61,7 +61,7 @@ RUN npm run build
 # USER root
 
 # Run Laravel optimizations
-RUN php artisan optimize:clear
+# RUN php artisan optimize:clear
 RUN php artisan optimize
 
 # Configure Nginx
