@@ -10,21 +10,17 @@ export default defineConfig({
     ],
     build: {
         outDir: 'public/build',
-        // Add manifest for production
         manifest: true,
         rollupOptions: {
-            // Ensure proper handling of dynamic imports
             output: {
-                manualChunks: undefined,
-            },
-        },
+                manualChunks: undefined
+            }
+        }
     },
-    // Add base URL configuration
-    base: '/build/',
-
-       server: {
+    server: {
         hmr: {
             host: 'localhost'
         }
-    }
+    },
+     base: '/build/',
 });
