@@ -69,7 +69,9 @@
 
 <body class="font-sans antialiased bg-blue-200 dark:bg-slate-950">
     <div class="z-100 fixed w-full flex justify-center">
-        @include('layouts.navigation')
+        @if(Auth::user)
+            @include('layouts.navigation')
+        @endif
     </div>
     <!-- Page Heading -->
     @isset($header)
