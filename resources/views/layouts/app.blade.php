@@ -69,9 +69,9 @@
 
 <body class="font-sans antialiased bg-blue-200 dark:bg-slate-950">
     <div class="z-100 fixed w-full flex justify-center">
-        @if(Auth::user)
+        @auth
             @include('layouts.navigation')
-        @endif
+        @endauth
     </div>
     <!-- Page Heading -->
     @isset($header)
